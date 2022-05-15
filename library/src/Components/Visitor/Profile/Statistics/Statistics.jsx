@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+
 import moment from "moment";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -19,29 +20,74 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
-function Statistics({ fetched_logs }) {
-    const [year, setYear] = useState("All");
-    const [fetched_year, setFetched_year] = useState([2021, 2022]);
+function Statistics() {
+    const [year, setYear] = useState("all");
     const [logs, setLogs] = useState([]);
-    useEffect(() => {
-        setLogs(fetched_logs);
-        console.log(fetched_logs);
-    }, [fetched_logs]);
+    const [fetchedLogs, setFetchedLogs] = useState([]);
 
     const [range1, setRange1] = useState(null);
     const [range2, setRange2] = useState(null);
+    const [custom, setCustom] = useState(null);
+
+    useEffect(() => {
+        setLogs(fetchedLogs);
+    }, [fetchedLogs]);
+
+    useEffect(() => {
+        if (year === "all") {
+            setLogs(fetchedLogs);
+        } else if (year === "custom") {
+            fetchedLogs.map((e) => {
+                if (e.day === custom) {
+                    console.log(e);
+                    setLogs([e]);
+                }
+            });
+        } else if (year === "range") {
+            if (
+                range1 != null &&
+                range2 != null &&
+                range1 !== "Invalid date" &&
+                range2 !== "Invalid date"
+            ) {
+                console.log({ range1 });
+                console.log({ range2 });
+                let res = fetchedLogs.filter((e) => {
+                    if (moment(e.day).isBetween(range1, range2)) {
+                        return e.day;
+                    }
+                });
+                setLogs(res);
+            }
+        }
+    }, [year, fetchedLogs, custom, range1, range2]);
+
+    useEffect(() => {
+        let register_no = "kh.sc.p2mca21032";
+        async function fetch_logs() {
+            const response = await fetch(
+                "http://localhost:3001/api/logs/fetch-stat-log",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-access-token": localStorage.getItem("token"),
+                    },
+                    body: JSON.stringify({
+                        register_no,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+            if (data.status === "ok") {
+                console.log(data);
+                setFetchedLogs(data.logs);
+            }
+        }
+
+        fetch_logs();
+    }, []);
 
     return (
         <div className="statistics">
@@ -63,49 +109,85 @@ function Statistics({ fetched_logs }) {
                                     setYear(e.target.value);
                                 }}
                             >
-                                <MenuItem value={"All"}>All</MenuItem>
+                                <MenuItem value={"all"}>All</MenuItem>
+                                <MenuItem value={"range"}>Range</MenuItem>
                                 <MenuItem value={"custom"}>Custom</MenuItem>
-                                {fetched_year.map((e, idx) => {
+                                {/* {fetched_year.map((e, idx) => {
                                     return (
                                         <MenuItem key={idx} value={e}>
                                             {e}
                                         </MenuItem>
                                     );
-                                })}
+                                })} */}
                             </Select>
                         </FormControl>
                     </div>
-                    {year === "custom" && (
-                        <div className="custom-range">
-                            <div className="range-field">
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDateFns}
-                                >
-                                    <DatePicker
-                                        label="To"
-                                        value={range1}
-                                        onChange={(newValue) => {
-                                            setRange1(newValue);
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                size="small"
-                                                {...params}
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
-                            </div>
+                    <div className="custom">
+                        {year === "range" && (
+                            <div className="custom-range">
+                                <div className="range-field">
+                                    <LocalizationProvider
+                                        dateAdapter={AdapterDateFns}
+                                    >
+                                        <DatePicker
+                                            label="To"
+                                            value={range1}
+                                            onChange={(newValue) => {
+                                                setRange1(
+                                                    moment(newValue).format(
+                                                        "MM-DD-YYYY"
+                                                    )
+                                                );
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    size="small"
+                                                    {...params}
+                                                />
+                                            )}
+                                        />
+                                    </LocalizationProvider>
+                                </div>
 
-                            <div className="range-field">
+                                <div className="range-field">
+                                    <LocalizationProvider
+                                        dateAdapter={AdapterDateFns}
+                                    >
+                                        <DatePicker
+                                            label="From"
+                                            value={range2}
+                                            onChange={(newValue) => {
+                                                setRange2(
+                                                    moment(newValue).format(
+                                                        "MM-DD-YYYY"
+                                                    )
+                                                );
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    size="small"
+                                                    {...params}
+                                                />
+                                            )}
+                                        />
+                                    </LocalizationProvider>
+                                </div>
+                            </div>
+                        )}
+                        {year === "custom" && (
+                            <div className="custom-date">
                                 <LocalizationProvider
                                     dateAdapter={AdapterDateFns}
                                 >
                                     <DatePicker
-                                        label="From"
-                                        value={range2}
+                                        label="Date"
+                                        value={custom}
                                         onChange={(newValue) => {
-                                            setRange2(newValue);
+                                            setCustom(
+                                                moment(newValue).format(
+                                                    "MM-DD-YYYY"
+                                                )
+                                            );
                                         }}
                                         renderInput={(params) => (
                                             <TextField
@@ -116,8 +198,8 @@ function Statistics({ fetched_logs }) {
                                     />
                                 </LocalizationProvider>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
                 <div className="table">
                     <TableContainer component={Paper}>
@@ -143,10 +225,10 @@ function Statistics({ fetched_logs }) {
                                             {row.day}
                                         </TableCell>
                                         <TableCell>
-                                            {row.value}
-                                            {moment
+                                            {Math.floor(row.value)}
+                                            {/* {moment
                                                 .utc(row.value)
-                                                .format("HH:mm")}
+                                                .format("HH:mm")} */}
                                         </TableCell>
                                     </TableRow>
                                 ))}

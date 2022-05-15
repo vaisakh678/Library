@@ -169,7 +169,8 @@ const handle_checkout = async (user_reg, visitor) => {
     console.log({ minutes });
     if (TIME_OUT < minutes) {
         console.log("Time limit exceded");
-        return "-1";
+        // return "-1";
+        // tldr chekout data need to be handled if time out happens
     } else {
         console.log("time limit not exceded");
     }
@@ -298,7 +299,7 @@ app.post("/api/logs/fetch-active-visitors", async (req, res) => {
     }
 });
 
-app.post("/api/logs/fetch-visitor-log", async (req, res) => {
+app.post("/api/logs/fetch-heatmap-log", async (req, res) => {
     try {
         const token = req.headers["x-access-token"];
         const decode = jwt.verify(token, secrete_key);
@@ -312,7 +313,9 @@ app.post("/api/logs/fetch-visitor-log", async (req, res) => {
             let years_hash = {};
             logs.map((element) => {
                 let day = moment(element.checkin).format("YYYY-MM-DD");
-                let value = (element.checkout - element.checkin) / 60000;
+                let value = Math.floor(
+                    (element.checkout - element.checkin) / 60000
+                );
                 years_hash[moment(day).format("YYYY")] = true;
                 if (hash.hasOwnProperty(day)) {
                     hash[day] += value;
@@ -323,7 +326,7 @@ app.post("/api/logs/fetch-visitor-log", async (req, res) => {
 
             let years = [];
             for (let year in years_hash) {
-                years.push(year);
+                years.push(Number(year));
             }
 
             let payload = [];
@@ -334,6 +337,47 @@ app.post("/api/logs/fetch-visitor-log", async (req, res) => {
             }
 
             res.json({ status: "ok", years: years, logs: payload });
+        } else {
+            res.json({ status: "err", error: "invalid token" });
+        }
+    } catch (err) {
+        res.json({ status: "err" });
+        console.log(err);
+    }
+});
+
+app.post("/api/logs/fetch-stat-log", async (req, res) => {
+    try {
+        const token = req.headers["x-access-token"];
+        const decode = jwt.verify(token, secrete_key);
+        if (decode) {
+            let logs = [];
+            logs = await Logs.find({
+                register_number: req.body.register_no.toUpperCase(),
+                checkout: { $ne: null },
+            });
+            let hash = {};
+            logs.map((element) => {
+                let day = moment(element.checkin).format("MM-DD-YYYY");
+                let value = Math.floor(
+                    (element.checkout - element.checkin) / 60000
+                );
+                if (hash.hasOwnProperty(day)) {
+                    hash[day] += value;
+                } else {
+                    hash[day] = value;
+                }
+            });
+
+            let payload = [];
+            for (let key in hash) {
+                day = key;
+                let value = hash[key];
+                payload.push({ day, value });
+            }
+            // console.log(payload);
+
+            res.json({ status: "ok", logs: payload });
         } else {
             res.json({ status: "err", error: "invalid token" });
         }

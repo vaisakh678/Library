@@ -8,7 +8,8 @@ h3 {
 }
 
 .year-select-input,
-.custom-range {
+.custom-range,
+.custom-date {
     margin-bottom: 1rem;
 }
 

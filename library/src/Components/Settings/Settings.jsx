@@ -134,7 +134,7 @@ function Settings({ _setSmart_catching }) {
     return (
         <div className="settings">
             <h1 className="heading">Settings</h1>
-            <div className="profile sub-setting-options">
+            <div className="sub-setting-options">
                 <h3 className="sub-heading">Profile</h3>
                 <div className="name-container">
                     <div className="input-feild-settings">
