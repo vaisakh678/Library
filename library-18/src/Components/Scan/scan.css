@@ -1,0 +1,64 @@
+.scan {
+    border-radius: 1em;
+    padding: 3rem;
+    width: 80%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.scan-wrapper {
+    background-color: #d8dee9;
+    border-radius: 0.5rem;
+    height: 35rem;
+    width: 25rem;
+    position: relative;
+}
+
+.scanner {
+    width: 100%;
+    height: 85%;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.menu {
+    /* background-color: #4c566a; */
+    background-color: #2e3440;
+    border-radius: 0 0 0.5rem 0.5rem;
+    /* border-radius: 0.5rem 0.5rem 0 0; */
+    height: 15%;
+    width: 100%;
+}
+
+.btns {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    background-color: 88c0d0;
+    color: #eceff4;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    margin: 0.1rem;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background-color: #4c566a;
+}
+
+.active {
+    background-color: #4c566a;
+}
+
+.wait {
+    position: absolute;
+    top: 0;
+}

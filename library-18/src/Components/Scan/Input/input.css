@@ -1,0 +1,28 @@
+.input-scanner {
+    width: 100%;
+    height: 100%;
+    /* background-color: grey; */
+    /* border: 1px solid #6d6f73; */
+    border: 1px solid #b5bac4;
+    border-radius: 0.2rem;
+}
+
+.input-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inp-btn {
+    background-color: #3b4252;
+}
+
+.inp-btn:hover {
+    background-color: #434c5e;
+}
+
+.input-field {
+    margin: 1rem;
+}

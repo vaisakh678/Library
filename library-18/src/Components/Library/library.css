@@ -1,0 +1,22 @@
+.library {
+    border-radius: 1em;
+    padding: 2rem;
+    width: 80%;
+    height: 100%;
+    background-color: white;
+    /* overflow-y: auto; */
+}
+
+.library-heading {
+    margin-bottom: 1rem;
+}
+
+.content {
+    height: 100%;
+}
+
+.fuck {
+    background-color: green;
+    width: 100%;
+    height: 100%;
+}

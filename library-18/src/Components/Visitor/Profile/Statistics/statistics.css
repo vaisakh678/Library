@@ -1,0 +1,26 @@
+.statistics {
+    /* background-color: green; */
+    height: 500px;
+}
+
+h3 {
+    margin-bottom: 1rem;
+}
+
+.year-select-input,
+.custom-range {
+    margin-bottom: 1rem;
+}
+
+.custom-range {
+    display: flex;
+}
+
+.range-field {
+    /* width: 10rem; */
+    margin-right: 1rem;
+}
+
+.table {
+    width: 30rem;
+}

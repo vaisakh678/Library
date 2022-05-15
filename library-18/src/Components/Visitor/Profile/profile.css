@@ -1,0 +1,43 @@
+.profile {
+    height: 100%;
+}
+
+.nav-heading {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.back-icon {
+    margin-right: 1rem;
+}
+
+.profile-details {
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+.profile-container {
+    height: 90%;
+    overflow-y: auto;
+    padding: 1rem;
+    border: 1px rgb(232, 232, 232) solid;
+}
+
+.profile-picture {
+    margin-right: 4rem;
+}
+
+.details ul {
+    /* background-color: green; */
+    display: flex;
+    flex-direction: column;
+}
+.details li {
+    margin-bottom: 0.5rem;
+}
+
+.year-select,
+.heatmap {
+    margin-bottom: 1rem;
+}

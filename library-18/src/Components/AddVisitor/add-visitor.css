@@ -1,0 +1,17 @@
+.add-visitor {
+  border-radius: 1em;
+  padding: 2rem;
+  width: 80%;
+  height: 100%;
+  background-color: white;
+}
+
+.input-fields {
+  width: 15rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  margin-bottom: 0.5rem;
+}

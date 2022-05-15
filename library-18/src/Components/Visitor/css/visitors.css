@@ -1,0 +1,12 @@
+.visitor {
+    border-radius: 1em;
+    padding: 2rem;
+    width: 80%;
+    height: 100%;
+    background-color: white;
+    /* overflow-y: auto; */
+}
+
+.visitor-heading {
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,64 @@
+.settings {
+    border-radius: 1em;
+    padding: 2rem;
+    width: 80%;
+    height: 100%;
+    background-color: white;
+    overflow-y: auto;
+}
+
+.heading {
+    margin-bottom: 3rem;
+}
+
+.sub-heading {
+    margin-bottom: 0.5rem;
+}
+
+.sub-setting-options {
+    margin-bottom: 2rem;
+}
+
+.name-container {
+    display: flex;
+}
+
+.input-feild-settings {
+    width: 15rem;
+    margin-right: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.input-delay-feild {
+    width: 10rem;
+}
+
+.pref-setting {
+    display: flex;
+    flex-direction: column;
+}
+
+.toggle-op {
+    margin-top: 1rem;
+}
+
+.label {
+    margin-top: 0.5rem;
+    opacity: 0.5;
+    font-size: small;
+    display: flex;
+}
+
+.save-btn {
+    transition: all 0.5s;
+    overflow: hidden;
+    height: 50px;
+}
+
+.height-zero {
+    height: 0px;
+}
+
+.button-wrapper {
+    transition: all 0.5s;
+}
