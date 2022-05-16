@@ -6,7 +6,7 @@ import Select from "@mui/material/Select";
 import "react-d3-calendar-heatmap/dist/react.d3.calendar.heatmap.css";
 import CalendarHeatMap from "react-d3-calendar-heatmap";
 
-function Heatmap() {
+function Heatmap({ register_no }) {
     const [year, setYear] = useState(0);
     const [fetched_year, setFetched_Year] = useState([]);
     const [max, setMax] = useState(0);
@@ -19,7 +19,6 @@ function Heatmap() {
     }, [max, fetched_logs]);
 
     useEffect(() => {
-        let register_no = "kh.sc.p2mca21032";
         async function fetch_logs() {
             const response = await fetch(
                 "http://localhost:3001/api/logs/fetch-heatmap-log",
@@ -45,7 +44,7 @@ function Heatmap() {
         }
 
         fetch_logs();
-    }, []);
+    }, [register_no]);
 
     const timeRange = {
         from: new Date(`${year}-01-01`),
@@ -83,7 +82,7 @@ function Heatmap() {
                 cellSize={15}
                 timeRange={timeRange}
                 data={logs}
-                cellShape="square"
+                // cellShape="square"
                 tooltipOffsetX={200}
                 tooltipOffsetY={-300}
             />

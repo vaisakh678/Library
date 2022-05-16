@@ -3,6 +3,7 @@ import "./settings.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
+import SubSettingsProfile from "./Sub_Settings_profile/Sub_Settings_profile";
 
 function Settings({ _setSmart_catching }) {
     const [name, setName] = useState("");
@@ -17,12 +18,16 @@ function Settings({ _setSmart_catching }) {
     const [profChange, setProfChange] = useState(false);
     const [prefChange, setPrefChange] = useState(false);
 
+    const [isProfLoaded, setIsProfLoaded] = useState(false);
+    const [isPrefLoaded, setIsPrefLoaded] = useState(false);
+
     useEffect(() => {
         if (
             name === initial_values.name &&
             last_name === initial_values.last_name &&
             email === initial_values.email
         ) {
+            setIsProfLoaded(true);
             setProfChange(false);
         } else {
             setProfChange(true);
@@ -35,6 +40,7 @@ function Settings({ _setSmart_catching }) {
             s_caching === initial_values.s_caching &&
             darkTheme === initial_values.darkTheme
         ) {
+            setIsPrefLoaded(true);
             setPrefChange(false);
         } else {
             setPrefChange(true);
@@ -135,64 +141,17 @@ function Settings({ _setSmart_catching }) {
         <div className="settings">
             <h1 className="heading">Settings</h1>
             <div className="sub-setting-options">
-                <h3 className="sub-heading">Profile</h3>
-                <div className="name-container">
-                    <div className="input-feild-settings">
-                        <TextField
-                            className="input-feild-settings"
-                            id="standard-basic"
-                            label="First Name"
-                            variant="standard"
-                            value={name}
-                            onChange={(e) => {
-                                setName(e.target.value);
-                            }}
-                        />
-                    </div>
-                    <div className="input-feild-settings">
-                        <TextField
-                            className="input-feild-settings"
-                            id="standard-basic"
-                            label="Last Name"
-                            variant="standard"
-                            value={last_name}
-                            onChange={(e) => {
-                                setLast_name(e.target.value);
-                            }}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <div className="input-feild-settings">
-                        <TextField
-                            className="input-feild-settings"
-                            id="standard-basic"
-                            label="Email"
-                            variant="standard"
-                            value={email}
-                            onChange={(e) => {
-                                setEmail(e.target.value);
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="button-wrapper">
-                    <div
-                        className={
-                            profChange ? "save-btn" : "save-btn height-zero"
-                        }
-                    >
-                        <Button
-                            onClick={() => {
-                                handle_profile_changes();
-                            }}
-                            className="save-changes-btn"
-                            variant="contained"
-                        >
-                            Save Changes
-                        </Button>
-                    </div>
-                </div>
+                <SubSettingsProfile
+                    handle_profile_changes={handle_profile_changes}
+                    name={name}
+                    setName={setName}
+                    last_name={last_name}
+                    setLast_name={setLast_name}
+                    email={email}
+                    setEmail={setEmail}
+                    profChange={profChange}
+                    isProfLoaded={isProfLoaded}
+                />
             </div>
             <div className="preferences">
                 <h3 className="sub-heading sub-heading">Preferences</h3>
@@ -237,7 +196,9 @@ function Settings({ _setSmart_catching }) {
                     <div className="button-wrapper">
                         <div
                             className={
-                                prefChange ? "save-btn" : "save-btn height-zero"
+                                prefChange && isPrefLoaded
+                                    ? "save-btn"
+                                    : "save-btn height-zero"
                             }
                         >
                             <Button

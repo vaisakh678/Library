@@ -6,6 +6,7 @@ import Settings from "../../Components/Settings/Settings";
 import AddVisitor from "../../Components/AddVisitor/AddVisitor";
 import Visitor from "../../Components/Visitor/Visitor";
 import Scan from "../../Components/Scan/Scan";
+import MD5 from "crypto-js/md5";
 
 function Dashboard() {
     const [selected_page, setSelected_page] = useState("");
@@ -13,11 +14,29 @@ function Dashboard() {
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
+
     const [qr_delay, setQr_delay] = useState("");
     const [smart_catching, setSmart_catching] = useState(false);
     const [darkTheme, setDarkTheme] = useState("");
     const [register_number, setRegister_number] = useState("");
     const [type, setType] = useState("");
+
+    const [prof_hash, setProf_hash] = useState([]);
+    const [pref_hash, setPref_hash] = useState([]);
+
+    // handling profile hashing
+    useEffect(() => {
+        setProf_hash(MD5(JSON.stringify([name, lastname, email])).toString());
+    }, [name, lastname, email]);
+
+    // handling preferences hashing
+    useEffect(() => {
+        setPref_hash(
+            MD5(
+                JSON.stringify([qr_delay, smart_catching, darkTheme])
+            ).toString()
+        );
+    }, [qr_delay, smart_catching, darkTheme]);
 
     useEffect(() => {
         if (!localStorage.getItem("token")) {

@@ -1,6 +1,6 @@
 .statistics {
     /* background-color: green; */
-    height: 500px;
+    /* height: 500px; */
 }
 
 h3 {
@@ -9,7 +9,9 @@ h3 {
 
 .year-select-input,
 .custom-range,
-.custom-date {
+.custom-date,
+.table,
+.csv-download {
     margin-bottom: 1rem;
 }
 

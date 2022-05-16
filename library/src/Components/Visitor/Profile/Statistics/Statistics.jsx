@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 import moment from "moment";
 
@@ -20,7 +21,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-function Statistics() {
+function Statistics({ register_no }) {
+    // let register_no = "kh.sc.p2mca21032";
     const [year, setYear] = useState("all");
     const [logs, setLogs] = useState([]);
     const [fetchedLogs, setFetchedLogs] = useState([]);
@@ -63,7 +65,6 @@ function Statistics() {
     }, [year, fetchedLogs, custom, range1, range2]);
 
     useEffect(() => {
-        let register_no = "kh.sc.p2mca21032";
         async function fetch_logs() {
             const response = await fetch(
                 "http://localhost:3001/api/logs/fetch-stat-log",
@@ -87,7 +88,28 @@ function Statistics() {
         }
 
         fetch_logs();
-    }, []);
+    }, [register_no]);
+
+    function handle_download_csv() {
+        const rows = [["Serial", "Date", "Time spend (minutes)"]];
+        logs.map((e, idx) => {
+            console.log(e);
+            rows.push([idx + 1, e.day, e.value]);
+        });
+
+        let csvContent =
+            "data:text/csv;charset=utf-8," +
+            rows.map((e) => e.join(",")).join("\n");
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+
+        link.setAttribute("download", `${register_no.toUpperCase()}.csv`);
+        document.body.appendChild(link); // Required for FF
+        link.click(); // This will download the data file named "my_data.csv".
+        // window.open(encodedUri);
+    }
 
     return (
         <div className="statistics">
@@ -235,6 +257,11 @@ function Statistics() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                </div>
+                <div className="csv-download">
+                    <Button onClick={handle_download_csv} variant="contained">
+                        Download csv
+                    </Button>
                 </div>
             </div>
         </div>
